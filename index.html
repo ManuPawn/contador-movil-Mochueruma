@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Contador Móvil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            touch-action: manipulation; /* Optimiza respuesta táctil */
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            -webkit-tap-highlight-color: transparent; /* Elimina el resaltado azul al tocar */
+        }
+        .container {
+            text-align: center;
+            position: relative;
+        }
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+        .main-button {
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            user-select: none; /* Evita selección de texto */
+            margin-bottom: 15px;
+        }
+        .main-button:active {
+            background-color: #45a049;
+            transform: scale(0.98);
+        }
+        .reset-button {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .reset-button:active {
+            background-color: #d32f2f;
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="counter">0</h1>
+        <button class="main-button" id="incrementBtn">Presióname</button>
+        <button class="reset-button" id="resetBtn">Reiniciar</button>
+    </div>
+
+    <script>
+        const counterElement = document.getElementById('counter');
+        const incrementBtn = document.getElementById('incrementBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        let counter = 0;
+        let canIncrement = true; // Bloqueo para evitar incrementos rápidos
+
+        // Función para incrementar (con retraso de 300ms entre clicks)
+        function incrementCounter() {
+            if (!canIncrement) return;
+            
+            counter++;
+            counterElement.textContent = counter;
+            canIncrement = false;
+            
+            // Feedback visual
+            incrementBtn.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                incrementBtn.style.transform = 'scale(1)';
+                canIncrement = true;
+            }, 300);
+        }
+
+        // Función para reiniciar
+        function resetCounter() {
+            counter = 0;
+            counterElement.textContent = counter;
+            
+            // Feedback visual
+            resetBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                resetBtn.style.transform = 'scale(1)';
+            }, 100);
+        }
+
+        // Eventos (compatibles con móvil y desktop)
+        incrementBtn.addEventListener('click', incrementCounter);
+        incrementBtn.addEventListener('touchstart', incrementCounter, { passive: true });
+        
+        resetBtn.addEventListener('click', resetCounter);
+        resetBtn.addEventListener('touchstart', resetCounter, { passive: true });
+    </script>
+</body>
+</html>
